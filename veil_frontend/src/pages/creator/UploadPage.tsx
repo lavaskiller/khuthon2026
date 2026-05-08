@@ -52,7 +52,7 @@ export default function UploadPage() {
       // 백엔드 필드명: teaser_file, mvp_file, content_type
       fd.append('teaser_file', teaserFile);
       fd.append('mvp_file', mvpFile);
-      fd.append('content_type', contentType);
+      fd.append('content_type', contentType.toUpperCase());
       const interval = setInterval(() => setProgress(p => Math.min(p + 10, 90)), 200);
       const res = await api.creator.uploadTeaser(token, fd);
       clearInterval(interval);
