@@ -52,6 +52,16 @@ const contentTypeToBackend = (ct: ContentType): string => ct.toUpperCase();
 
 const contentTypeFromBackend = (ct: string): ContentType => ct.toLowerCase() as ContentType;
 
+const ageRatingToBackend = (r: AgeRating): string => {
+  const map: Record<AgeRating, string> = { all: 'ALL', '12': 'TWELVE_PLUS', '15': 'FIFTEEN_PLUS', '19': 'ADULT_ONLY' };
+  return map[r] ?? 'ALL';
+};
+
+const ageRatingFromBackend = (r: string): AgeRating => {
+  const map: Record<string, AgeRating> = { ALL: 'all', TWELVE_PLUS: '12', FIFTEEN_PLUS: '15', ADULT_ONLY: '19' };
+  return map[r] ?? 'all';
+};
+
 // ─── Response mappers (backend snake_case → frontend camelCase) ───────────────
 
 function mapUser(u: Raw): User {
@@ -82,7 +92,7 @@ function mapContent(c: Raw): Content {
     genres: Array.isArray(c.genres) && c.genres.length > 0 ? genresFromBackend(c.genres) : undefined,
     directors: c.director_staff ? [(c.director_staff as string)] : undefined,
     releaseDate: c.release_date ?? undefined,
-    ageRating: c.age_rating ?? undefined,
+    ageRating: c.age_rating ? ageRatingFromBackend(c.age_rating as string) : undefined,
     externalLink: c.external_link ?? undefined,
   };
 }
@@ -117,7 +127,7 @@ function mapReveal(reveal: Raw, contentId: string): Content {
     genres: Array.isArray(reveal.genres) && reveal.genres.length > 0 ? genresFromBackend(reveal.genres) : undefined,
     directors: reveal.director_staff ? [(reveal.director_staff as string)] : undefined,
     releaseDate: reveal.release_date ?? undefined,
-    ageRating: reveal.age_rating ?? undefined,
+    ageRating: reveal.age_rating ? ageRatingFromBackend(reveal.age_rating as string) : undefined,
     externalLink: reveal.external_link ?? undefined,
   };
 }
@@ -268,7 +278,7 @@ export const api = {
           genres: genresToBackend(info.genres),
           director_staff: info.directors?.join(', ') ?? null,
           release_date: info.releaseDate ?? null,
-          age_rating: info.ageRating,
+          age_rating: ageRatingToBackend(info.ageRating),
           external_link: info.externalLink ?? null,
         }),
       }).then(mapContent),
