@@ -52,7 +52,7 @@ class ReviewService:
             **{
                 k: v
                 for k, v in content.__dict__.items()
-                if not k.startswith("_")
+                if not k.startswith("_") and k != "genres"
             },
             genres=content.genres,
             creator_email=content.user.email,

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime
 
 from pydantic import BaseModel, field_validator
 
@@ -38,7 +38,7 @@ class ContentAdminDetail(BaseModel):
     director_staff: str | None
     genres: list[Genre] = []
     age_rating: AgeRating | None
-    release_date: str | None  # ISO string for simplicity
+    release_date: date | None
     external_link: str | None
     review_status: ReviewStatus
     rejection_reason: str | None
