@@ -20,7 +20,7 @@ import {
 const IS_MOCK = (token: string | null | undefined) => token === 'mock-token';
 
 // Backend runs on port 8000. Set VITE_API_URL to override (e.g. in production).
-const BASE_URL = (import.meta.env.VITE_API_URL as string | undefined) ?? 'http://localhost:8000';
+const BASE_URL = (import.meta.env.VITE_API_URL as string | undefined) ?? 'http://192.168.2.19:8000';
 // Backend API prefix — matches API_V1_PREFIX in backend .env
 const API_PREFIX = (import.meta.env.VITE_API_PREFIX as string | undefined) ?? '/api/v1';
 

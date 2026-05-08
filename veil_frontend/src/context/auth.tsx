@@ -21,18 +21,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   async function login(email: string, password: string) {
     setIsLoading(true);
     try {
-      // Mock accounts for testing without a backend
-      const MOCK_USERS: Record<string, User> = {
-        'consumer@test.com': { id: 'mock-consumer', email: 'consumer@test.com', nickname: '테스트소비자', role: 'consumer', onboardingCompleted: false },
-        'creator@test.com':  { id: 'mock-creator',  email: 'creator@test.com',  nickname: '테스트창작자', role: 'creator' },
-        'admin@test.com':    { id: 'mock-admin',    email: 'admin@test.com',    nickname: '관리자', role: 'admin' },
-      };
-      if (password === 'test1234' && email in MOCK_USERS) {
-        setUser(MOCK_USERS[email]);
-        setToken('mock-token');
-        return;
-      }
-
       const { api } = await import('@/services/api');
       // 백엔드 login은 { access_token, token_type }만 반환 — user 별도 조회
       const { access_token } = await api.auth.login(email, password);
