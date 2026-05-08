@@ -1,12 +1,13 @@
-import hashlib
-from datetime import date, datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone
 
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.utils import age_group as _age_group
+from app.core.utils import anon_id as _anon_id
 from app.models.content import Content, ReviewStatus
-from app.models.notification import Notification, NotificationType
 from app.repositories.invite_repository import InviteRepository
+from app.services.notification_service import NotificationService
 from app.schemas.invite import (
     InterestedConsumerItem,
     ReceivedNoticeItem,
@@ -14,18 +15,6 @@ from app.schemas.invite import (
     SendNoticeResult,
 )
 
-
-def _age_group(birth_date: date) -> str:
-    today = date.today()
-    age = today.year - birth_date.year - (
-        (today.month, today.day) < (birth_date.month, birth_date.day)
-    )
-    return f"{(age // 10) * 10}대"
-
-
-def _anon_id(user_id: int, content_id: int) -> str:
-    raw = f"veil:{content_id}:{user_id}"
-    return hashlib.sha256(raw.encode()).hexdigest()[:16]
 
 
 class InviteService:
@@ -80,13 +69,11 @@ class InviteService:
             user_ids=target_ids,
         )
 
-        # 인앱 알림 생성
+        # F-NT-02: 수신자별 인앱 알림 생성
         for uid in target_ids:
             self.db.add(
-                Notification(
-                    user_id=uid,
-                    type=NotificationType.EXTERNAL_NOTICE,
-                    content_id=content_id,
+                NotificationService.build_external_notice(
+                    recipient_id=uid, content_id=content_id
                 )
             )
         await self.db.commit()

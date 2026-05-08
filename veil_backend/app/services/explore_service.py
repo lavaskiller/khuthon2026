@@ -4,10 +4,13 @@ from fastapi import HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.utils import anon_id
 from app.models.content import Content, ReviewStatus
+from app.models.notification import Notification, NotificationType
 from app.models.onboarding import ContentType
 from app.models.user import User
 from app.repositories.reaction_repository import ReactionRepository
+from app.services.notification_service import NotificationService
 from app.schemas.explore import (
     ContentRevealRead,
     FeedItem,
@@ -82,6 +85,18 @@ class ExploreService:
         await self._assert_content_exists(content_id)
         _, is_new = await self.reaction_repo.upsert_interest(user_id, content_id)
         content = await self.db.get(Content, content_id)
+
+        # F-NT-01: 최초 관심 시에만 창작자에게 알림 (중복 방지)
+        if is_new and content:
+            self.db.add(
+                NotificationService.build_info_reveal(
+                    creator_id=content.user_id,
+                    content_id=content_id,
+                    consumer_anon_id=anon_id(user_id, content_id),
+                )
+            )
+            await self.db.commit()
+
         return ContentRevealRead.model_validate(content), is_new
 
     async def remove_interest(self, user_id: int, content_id: int) -> None:

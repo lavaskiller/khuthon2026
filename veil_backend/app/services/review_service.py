@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.content import Content, ReviewStatus
 from app.models.onboarding import ContentType
 from app.repositories.review_repository import ReviewRepository
+from app.services.notification_service import NotificationService
 from app.schemas.review import (
     ContentAdminDetail,
     PaginatedPendingContents,
@@ -64,6 +65,15 @@ class ReviewService:
         content.reviewed_at = datetime.now(timezone.utc)
         content.rejection_reason = None
         await self.repo.update(content)
+        # F-NT-03: 창작자에게 승인 알림
+        self.repo.db.add(
+            NotificationService.build_review_result(
+                creator_id=content.user_id,
+                content_id=content_id,
+                result="approved",
+            )
+        )
+        await self.repo.db.commit()
         return await self.get_for_review(content_id)
 
     async def reject(
@@ -75,6 +85,16 @@ class ReviewService:
         content.reviewed_at = datetime.now(timezone.utc)
         content.rejection_reason = rejection_reason
         await self.repo.update(content)
+        # F-NT-03: 창작자에게 반려 알림
+        self.repo.db.add(
+            NotificationService.build_review_result(
+                creator_id=content.user_id,
+                content_id=content_id,
+                result="rejected",
+                rejection_reason=rejection_reason,
+            )
+        )
+        await self.repo.db.commit()
         return await self.get_for_review(content_id)
 
     async def list_history(self, admin_id: int) -> list[ReviewHistoryItem]:
