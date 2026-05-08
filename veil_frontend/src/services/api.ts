@@ -48,6 +48,8 @@ const genresToBackend = (genres: Genre[]): string[] => genres.map(g => g.toUpper
 const genresFromBackend = (genres: unknown[]): Genre[] =>
   genres.map(g => (g as string).toLowerCase() as Genre);
 
+const toAbsoluteUrl = (url: string) => (url && !url.startsWith('http') ? `${BASE_URL}${url}` : url);
+
 const contentTypeToBackend = (ct: ContentType): string => ct.toUpperCase();
 
 const contentTypeFromBackend = (ct: string): ContentType => ct.toLowerCase() as ContentType;
@@ -78,7 +80,7 @@ function mapContent(c: Raw): Content {
   return {
     id: String(c.id),
     creatorId: String(c.user_id ?? ''),
-    teaserUrl: (c.teaser_url as string) ?? '',
+    teaserUrl: toAbsoluteUrl((c.teaser_url as string) ?? ''),
     teaserDuration: (c.teaser_length as number) ?? 0,
     contentType: contentTypeFromBackend((c.content_type as string) ?? 'movie'),
     status: c.review_status ?? 'pending',
@@ -101,7 +103,7 @@ function mapFeedItem(item: Raw): Content {
   return {
     id: String(item.id),
     creatorId: '',
-    teaserUrl: (item.teaser_url as string) ?? '',
+    teaserUrl: toAbsoluteUrl((item.teaser_url as string) ?? ''),
     teaserDuration: (item.teaser_length as number) ?? 0,
     contentType: contentTypeFromBackend((item.content_type as string) ?? 'movie'),
     status: 'approved',
