@@ -182,7 +182,7 @@ export const api = {
     // 온보딩 완료 후 PATCH /users/me로 프로필 업데이트
     saveProfile: (token: string, profile: ConsumerProfile) =>
       request<Raw>('/users/me', token, {
-        method: 'PATCH',
+        method: 'PUT',
         body: JSON.stringify({
           birth_date: profile.birthDate,
           gender: genderToBackend(profile.gender),
@@ -227,7 +227,7 @@ export const api = {
 
     // PATCH /notifications/{id}/read
     markNotificationRead: (token: string, notificationId: string) =>
-      request<void>(`/notifications/${notificationId}/read`, token, { method: 'PATCH' }),
+      request<void>(`/notifications/${notificationId}/read`, token, { method: 'PUT' }),
 
     // POST /notifications/mark-all-read
     markAllNotificationsRead: (token: string) =>
@@ -261,7 +261,7 @@ export const api = {
       },
     ) =>
       request<Raw>(`/contents/${contentId}`, token, {
-        method: 'PATCH',
+        method: 'PUT',
         body: JSON.stringify({
           title: info.title,
           synopsis: info.synopsis,
@@ -311,7 +311,7 @@ export const api = {
 
     // PATCH /notifications/{id}/read
     markNotificationRead: (token: string, notificationId: string) =>
-      request<void>(`/notifications/${notificationId}/read`, token, { method: 'PATCH' }),
+      request<void>(`/notifications/${notificationId}/read`, token, { method: 'PUT' }),
   },
 
   admin: {
