@@ -66,13 +66,13 @@ export default function App() {
             <Route element={<CreatorLayout />}>
               <Route path="/creator/dashboard" element={<DashboardPage />} />
               <Route path="/creator/contents" element={<ContentsPage />} />
+              <Route path="/creator/consumers/:contentId" element={<ConsumersPage />} />
+              <Route path="/creator/notice/:contentId" element={<NoticePage />} />
               <Route path="/creator/notifications" element={<CreatorNotificationsPage />} />
               <Route path="/creator/settings" element={<CreatorSettingsPage />} />
             </Route>
             <Route path="/creator/upload" element={<UploadPage />} />
             <Route path="/creator/upload/info" element={<UploadInfoPage />} />
-            <Route path="/creator/consumers/:contentId" element={<ConsumersPage />} />
-            <Route path="/creator/notice/:contentId" element={<NoticePage />} />
           </Route>
 
           {/* Admin */}

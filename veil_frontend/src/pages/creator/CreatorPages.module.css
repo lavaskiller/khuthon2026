@@ -609,19 +609,99 @@
 /* Notice page */
 .noticeLayout {
   display: grid;
-  grid-template-columns: 1fr 340px;
+  grid-template-columns: 1fr 300px;
   gap: 24px;
   align-items: start;
+}
+
+/* Notice form (card style) */
+.noticeForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: var(--white);
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow-nav);
+  overflow: hidden;
+}
+
+.noticeFormSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px 28px;
+  border-bottom: 1px solid var(--border);
+}
+
+.noticeFormSection:last-of-type { border-bottom: none; }
+
+.noticeSectionLabel {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.noticeField {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.noticeFieldLabel {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.noticeTextarea {
+  min-height: 160px;
+}
+
+.noticeSubmitBtn {
+  margin: 20px 28px 24px;
+  align-self: flex-end;
+  background: var(--ink);
+  color: var(--canvas);
+  border: none;
+  border-radius: var(--r-btn);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  padding: 12px 28px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.noticeSubmitBtn:hover { opacity: 0.85; }
+.noticeSubmitBtn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* Notice aside */
+.noticeAside {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: sticky;
+  top: 24px;
+}
+
+.noticeAsideCard {
+  background: var(--white);
+  border-radius: var(--r-card);
+  padding: 20px;
+  box-shadow: var(--shadow-nav);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .inputLabelRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
 }
-
-.inputLabelRow .inputLabel { margin-bottom: 0; }
 
 .charCount {
   font-size: 11px;
@@ -631,89 +711,73 @@
 
 .charCountFull { color: #B91C1C; }
 
-.noticePreviewPanel {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  position: sticky;
-  top: 24px;
-}
-
 .noticePanelLabel {
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--text-muted);
-  margin: 0 0 8px;
-}
-
-.noticePreviewCard {
-  background: var(--white);
-  border-radius: var(--r-card);
-  padding: 16px;
-  box-shadow: var(--shadow-nav);
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  min-height: 120px;
-}
-
-.noticePreviewMsg {
-  font-size: 14px;
-  color: var(--text-primary);
-  line-height: 1.6;
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-
-.noticePlaceholder { color: var(--text-muted); font-style: italic; }
-
-.noticePreviewLink {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--canvas);
-  border-radius: var(--r-btn);
-  padding: 10px 14px;
-  border: 1.5px solid var(--border);
-}
-
-.noticePreviewLinkIcon { font-size: 14px; }
-
-.noticePreviewLinkLabel {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--ink);
+  margin: 0;
 }
 
 .noticeRecipientBox {
-  background: var(--lifted);
-  border-radius: var(--r-btn);
-  padding: 14px 16px;
   display: flex;
   align-items: baseline;
-  gap: 6px;
-  border: 1.5px solid var(--border);
+  gap: 4px;
 }
 
 .noticeRecipientCount {
-  font-size: 28px;
+  font-size: 40px;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   color: var(--ink);
+  line-height: 1;
 }
 
 .noticeRecipientText {
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 500;
   color: var(--text-muted);
 }
 
 .noticeGuide {
   font-size: 12px;
   color: var(--text-muted);
-  line-height: 1.7;
-  margin: 10px 0 0;
+  line-height: 1.8;
+  margin: 0;
+}
+
+/* Preview bubble */
+.noticePreviewBubble {
+  background: var(--canvas);
+  border-radius: 12px;
+  padding: 14px 16px;
+  border: 1.5px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 80px;
+}
+
+.noticePreviewMsg {
+  font-size: 13px;
+  color: var(--text-primary);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.noticePlaceholder { color: var(--text-subtle); font-style: italic; }
+
+.noticePreviewLink {
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+}
+
+.noticePreviewLinkLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
 }
 
 /* Success state */

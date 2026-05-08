@@ -61,9 +61,11 @@ export default function ConsumersPage() {
   const regionData = countBy(consumers.filter(c => c.region), c => c.region!);
 
   return (
-    <div className={styles.uploadPageWrap}>
-      <button className={styles.backBtn} onClick={() => navigate(-1)}>← 돌아가기</button>
-      <h1 className={styles.pageTitle}>소비자 통계</h1>
+    <div className={styles.page}>
+      <div className={styles.pageHeaderRow}>
+        <h1 className={styles.pageTitle}>소비자 통계</h1>
+        <button className={styles.backBtn} onClick={() => navigate(-1)}>← 돌아가기</button>
+      </div>
 
       {total === 0 ? (
         <div className={styles.emptyState}>아직 관심을 표시한 소비자가 없습니다.</div>
