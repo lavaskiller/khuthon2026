@@ -8,7 +8,8 @@ import styles from './CreatorPages.module.css';
 const CONTENT_TYPES: { value: ContentType; label: string }[] = [
   { value: 'movie', label: '영화' },
   { value: 'drama', label: '드라마' },
-  { value: 'shortform', label: '숏폼' },
+  { value: 'book', label: '책' },
+  { value: 'performance', label: '공연' },
 ];
 
 export default function UploadPage() {

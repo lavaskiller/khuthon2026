@@ -8,7 +8,7 @@ export interface User {
   onboardingCompleted?: boolean; // consumer only
 }
 
-export type ContentType = 'movie' | 'drama' | 'shortform' | 'book' | 'performance';
+export type ContentType = 'movie' | 'drama' | 'book' | 'performance';
 export type ContentStatus = 'pending' | 'approved' | 'rejected';
 export type ReactionType = 'pass' | 'interest';
 export type AgeRating = 'all' | '12' | '15' | '19';

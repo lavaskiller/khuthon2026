@@ -9,7 +9,7 @@ export default function FeedPage() {
   const { token } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const selectedTypes: ContentType[] = (location.state as { types?: ContentType[] } | null)?.types ?? ['movie', 'drama', 'shortform', 'performance'];
+  const selectedTypes: ContentType[] = (location.state as { types?: ContentType[] } | null)?.types ?? ['movie', 'drama', 'book', 'performance'];
   const videoRef = useRef<HTMLVideoElement>(null);
   const touchStartY = useRef<number>(0);
 
