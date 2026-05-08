@@ -43,7 +43,10 @@ export default function ContentsPage() {
                   <td className={styles.rejectionCell}>{c.rejectionReason ?? ''}</td>
                   <td>
                     {c.status === 'approved' && (
-                      <button className={styles.actionBtn} onClick={() => navigate(`/creator/consumers/${c.id}`)}>통계 보기</button>
+                      <div className={styles.actionBtnGroup}>
+                        <button className={styles.actionBtn} onClick={() => navigate(`/creator/consumers/${c.id}`)}>통계 보기</button>
+                        <button className={styles.actionBtn} onClick={() => navigate(`/creator/notice/${c.id}`)}>안내 발송</button>
+                      </div>
                     )}
                   </td>
                 </tr>

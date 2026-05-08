@@ -1,5 +1,5 @@
-import { useState, type FormEvent } from 'react';
-import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
+import { useState, useEffect, type FormEvent } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/auth';
 import { api } from '@/services/api';
 import styles from './CreatorPages.module.css';
@@ -11,15 +11,21 @@ export default function NoticePage() {
   const { contentId } = useParams<{ contentId: string }>();
   const { token } = useAuth();
   const navigate = useNavigate();
-  const [params] = useSearchParams();
-  const targetIds = params.get('ids')?.split(',').filter(Boolean) ?? [];
 
+  const [targetIds, setTargetIds] = useState<string[]>([]);
   const [url, setUrl] = useState('');
   const [message, setMessage] = useState('');
   const [linkLabel, setLinkLabel] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    if (!token || !contentId) return;
+    api.creator.getConsumers(token, contentId)
+      .then(list => setTargetIds(list.map(c => String(c.userId))))
+      .catch(() => {});
+  }, [token, contentId]);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
