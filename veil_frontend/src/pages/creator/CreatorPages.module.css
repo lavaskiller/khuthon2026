@@ -93,7 +93,7 @@
 /* Table */
 .tableWrap {
   background: var(--white);
-  border-radius: var(--r-card);
+  border-radius: 16px;
   overflow: hidden;
   box-shadow: var(--shadow-nav);
 }
