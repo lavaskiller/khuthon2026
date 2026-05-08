@@ -72,7 +72,7 @@ function mapUser(u: Raw): User {
     email: u.email as string,
     nickname: u.name as string,
     role: roleFromBackend(u.role as string),
-    onboardingCompleted: false,
+    onboardingCompleted: !!u.birth_date,
   };
 }
 
