@@ -838,5 +838,26 @@
   flex-shrink: 0;
 }
 
-.notifMsg { font-size: 14px; font-weight: 400; color: var(--text-primary); flex: 1; line-height: 1.4; }
+.notifClickable {
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.notifClickable:hover { border-color: var(--ink) !important; background: var(--lifted); }
+
+.notifContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.notifArrow {
+  font-size: 20px;
+  color: var(--text-muted);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.notifMsg { font-size: 14px; font-weight: 400; color: var(--text-primary); line-height: 1.4; }
 .notifTime { font-size: 11px; font-weight: 500; color: var(--text-subtle); }
