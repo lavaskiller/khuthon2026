@@ -1,10 +1,14 @@
 import enum
 from datetime import date
+from typing import TYPE_CHECKING
 
 from sqlalchemy import Boolean, Date, Enum, String
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
+
+if TYPE_CHECKING:
+    from app.models.onboarding import UserContentType, UserGenre
 
 
 class UserRole(str, enum.Enum):
@@ -31,3 +35,10 @@ class User(Base):
     gender: Mapped[Gender] = mapped_column(Enum(Gender), nullable=False)
     region: Mapped[str] = mapped_column(String(100), nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+
+    genres: Mapped[list["UserGenre"]] = relationship(
+        "UserGenre", back_populates="user", cascade="all, delete-orphan", lazy="selectin"
+    )
+    content_types: Mapped[list["UserContentType"]] = relationship(
+        "UserContentType", back_populates="user", cascade="all, delete-orphan", lazy="selectin"
+    )

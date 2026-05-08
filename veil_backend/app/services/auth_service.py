@@ -2,6 +2,7 @@ from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.security import create_access_token, hash_password, verify_password
+from app.models.onboarding import UserContentType, UserGenre
 from app.models.user import User
 from app.repositories.user_repository import UserRepository
 from app.schemas.user import TokenResponse, UserCreate
@@ -24,6 +25,8 @@ class AuthService:
             birth_date=payload.birth_date,
             gender=payload.gender,
             region=payload.region,
+            genres=[UserGenre(genre=g) for g in payload.genres],
+            content_types=[UserContentType(content_type=ct) for ct in payload.content_types],
         )
         return await self.repo.create(user)
 

@@ -1,8 +1,9 @@
 from fastapi import HTTPException, status
+from sqlalchemy import delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.security import hash_password
-from app.models.user import User, UserRole
+from app.models.onboarding import UserContentType, UserGenre
+from app.models.user import User
 from app.repositories.user_repository import UserRepository
 from app.schemas.user import UserRoleUpdate, UserUpdate
 
@@ -12,8 +13,26 @@ class UserService:
         self.repo = UserRepository(db)
 
     async def update_me(self, user: User, payload: UserUpdate) -> User:
-        for field, value in payload.model_dump(exclude_none=True).items():
+        simple_fields = payload.model_dump(
+            exclude_none=True, exclude={"genres", "content_types"}
+        )
+        for field, value in simple_fields.items():
             setattr(user, field, value)
+
+        if payload.genres is not None:
+            await self.repo.db.execute(
+                delete(UserGenre).where(UserGenre.user_id == user.id)
+            )
+            for genre in payload.genres:
+                self.repo.db.add(UserGenre(user_id=user.id, genre=genre))
+
+        if payload.content_types is not None:
+            await self.repo.db.execute(
+                delete(UserContentType).where(UserContentType.user_id == user.id)
+            )
+            for ct in payload.content_types:
+                self.repo.db.add(UserContentType(user_id=user.id, content_type=ct))
+
         return await self.repo.update(user)
 
     async def list_users(self) -> list[User]:
