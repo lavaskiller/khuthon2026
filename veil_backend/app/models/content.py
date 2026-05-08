@@ -74,7 +74,7 @@ class Content(Base):
         DateTime, server_default=func.now(), onupdate=func.now(), nullable=False
     )
 
-    user: Mapped["User"] = relationship("User", back_populates="contents")
+    user: Mapped["User"] = relationship("User", back_populates="contents", foreign_keys=[user_id])
     genres: Mapped[list["ContentGenre"]] = relationship(
         "ContentGenre", back_populates="content", cascade="all, delete-orphan", lazy="selectin"
     )

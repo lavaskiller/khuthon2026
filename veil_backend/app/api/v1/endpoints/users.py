@@ -15,7 +15,7 @@ async def get_me(current_user: User = Depends(get_current_active_user)):
     return current_user
 
 
-@router.patch("/me", response_model=UserRead)
+@router.put("/me", response_model=UserRead)
 async def update_me(
     payload: UserUpdate,
     current_user: User = Depends(get_current_active_user),
@@ -43,7 +43,7 @@ async def get_user(
     return await UserService(db).get_user(user_id)
 
 
-@router.patch("/{user_id}/role", response_model=UserRead)
+@router.put("/{user_id}/role", response_model=UserRead)
 async def update_user_role(
     user_id: int,
     payload: UserRoleUpdate,

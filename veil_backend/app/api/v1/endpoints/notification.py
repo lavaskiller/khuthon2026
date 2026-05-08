@@ -33,7 +33,7 @@ async def get_unread_count(
     return await NotificationService(db).get_unread_count(user_id=current_user.id)
 
 
-@router.patch("/{notification_id}/read", status_code=204)
+@router.put("/{notification_id}/read", status_code=204)
 async def mark_read(
     notification_id: int,
     current_user: User = Depends(get_current_active_user),

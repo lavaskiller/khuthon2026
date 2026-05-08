@@ -44,5 +44,6 @@ class User(Base):
         "UserContentType", back_populates="user", cascade="all, delete-orphan", lazy="selectin"
     )
     contents: Mapped[list["Content"]] = relationship(
-        "Content", back_populates="user", cascade="all, delete-orphan"
+        "Content", back_populates="user", cascade="all, delete-orphan",
+        foreign_keys="Content.user_id"
     )

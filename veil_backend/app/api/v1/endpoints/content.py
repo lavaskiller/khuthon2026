@@ -52,7 +52,7 @@ async def get_content(
     )
 
 
-@router.patch("/{content_id}", response_model=ContentRead)
+@router.put("/{content_id}", response_model=ContentRead)
 async def update_content_details(
     content_id: int,
     payload: ContentDetailUpdate,
