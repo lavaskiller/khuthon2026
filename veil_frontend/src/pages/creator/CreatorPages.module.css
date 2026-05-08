@@ -450,6 +450,41 @@
 
 .logoutBtn:hover { background: rgba(207,69,0,0.05); }
 
+/* Bulk action bar */
+.bulkActionBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--white);
+  border-radius: var(--r-btn);
+  padding: 14px 20px;
+  box-shadow: var(--shadow-nav);
+  position: sticky;
+  bottom: 24px;
+}
+
+.selectedCount {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.uploadBtn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* Notice sent badge */
+.noticeSentBadge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 8px;
+  border-radius: var(--r-pill);
+  font-size: 10px;
+  font-weight: 700;
+  background: #EAF5EC;
+  color: #1A7A2E;
+  border: 1.5px solid rgba(26,122,46,0.2);
+  vertical-align: middle;
+}
+
 /* Consumer list */
 .consumerCard input[type='checkbox'] {
   width: 18px;
@@ -474,10 +509,11 @@
   align-items: center;
   border: 1.5px solid var(--border);
   cursor: pointer;
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, background 0.15s;
 }
 
 .consumerCard:hover { border-color: var(--ink); }
+.consumerCardSelected { border-color: var(--ink); background: var(--lifted); }
 
 .consumerInfo {
   font-size: 14px;
@@ -489,6 +525,146 @@
   font-size: 12px;
   color: var(--text-muted);
   margin-top: 2px;
+}
+
+/* Notice page */
+.noticeLayout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 24px;
+  align-items: start;
+}
+
+.inputLabelRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.inputLabelRow .inputLabel { margin-bottom: 0; }
+
+.charCount {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.charCountFull { color: #B91C1C; }
+
+.noticePreviewPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: sticky;
+  top: 24px;
+}
+
+.noticePanelLabel {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0 0 8px;
+}
+
+.noticePreviewCard {
+  background: var(--white);
+  border-radius: var(--r-card);
+  padding: 16px;
+  box-shadow: var(--shadow-nav);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 120px;
+}
+
+.noticePreviewMsg {
+  font-size: 14px;
+  color: var(--text-primary);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.noticePlaceholder { color: var(--text-muted); font-style: italic; }
+
+.noticePreviewLink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--canvas);
+  border-radius: var(--r-btn);
+  padding: 10px 14px;
+  border: 1.5px solid var(--border);
+}
+
+.noticePreviewLinkIcon { font-size: 14px; }
+
+.noticePreviewLinkLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.noticeRecipientBox {
+  background: var(--lifted);
+  border-radius: var(--r-btn);
+  padding: 14px 16px;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  border: 1.5px solid var(--border);
+}
+
+.noticeRecipientCount {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.noticeRecipientText {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.noticeGuide {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin: 10px 0 0;
+}
+
+/* Success state */
+.noticeSuccess {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  padding: 80px 0;
+}
+
+.noticeSuccessIcon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #EAF5EC;
+  color: #1A7A2E;
+  font-size: 24px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(26,122,46,0.2);
+}
+
+.noticeSuccessActions {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
 }
 
 /* Notifications */

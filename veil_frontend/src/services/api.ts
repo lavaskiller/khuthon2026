@@ -83,7 +83,7 @@ function mapContent(c: Raw): Content {
     teaserUrl: toAbsoluteUrl((c.teaser_url as string) ?? ''),
     teaserDuration: (c.teaser_length as number) ?? 0,
     contentType: contentTypeFromBackend((c.content_type as string) ?? 'movie'),
-    status: c.review_status ?? 'pending',
+    status: ((c.review_status as string)?.toLowerCase() ?? 'pending') as Content['status'],
     rejectionReason: c.rejection_reason ?? undefined,
     uploadedAt: (c.created_at as string) ?? '',
     approvedAt: c.approved_at ?? undefined,
@@ -335,6 +335,23 @@ export const api = {
     // GET /review/{id}
     getContent: (token: string, contentId: string) =>
       request<Raw>(`/review/${contentId}`, token).then(mapContent),
+
+    // GET /review/history/me → ReviewHistoryItem[]
+    getReviewHistory: (token: string) =>
+      request<Raw[]>('/review/history/me', token).then(list => list.map(item => ({
+        id: String(item.id),
+        creatorId: '',
+        teaserUrl: '',
+        teaserDuration: 0,
+        contentType: contentTypeFromBackend((item.content_type as string) ?? 'movie'),
+        status: (item.review_status as string).toLowerCase() as Content['status'],
+        rejectionReason: item.rejection_reason ?? undefined,
+        uploadedAt: (item.created_at as string) ?? '',
+        approvedAt: item.reviewed_at ?? undefined,
+        exposureCount: 0,
+        interestCount: 0,
+        title: item.title ?? undefined,
+      } as Content))),
 
     // POST /review/{id}/approve
     approve: (token: string, contentId: string) =>
