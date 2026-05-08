@@ -1,0 +1,265 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.pageHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pageDesc {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.backBtn {
+  background: none;
+  border: none;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s;
+}
+
+.backBtn:hover { color: var(--ink); }
+
+.reviewId {
+  font-size: 13px;
+  color: var(--text-subtle);
+}
+
+.seqNum {
+  color: var(--text-muted);
+}
+
+.dateCell {
+  font-size: 12px;
+  color: var(--text-subtle);
+}
+
+.enterBtn {
+  background: none;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-pill);
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.enterBtn:hover { border-color: var(--ink); color: var(--ink); }
+
+.pageTitle {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin: 0;
+}
+
+/* Table */
+.tableWrap {
+  background: var(--white);
+  border-radius: var(--r-card);
+  overflow: hidden;
+  box-shadow: var(--shadow-nav);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.table th {
+  text-align: left;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--lifted);
+}
+
+.table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+  color: var(--text-primary);
+}
+
+.table tr:last-child td { border-bottom: none; }
+
+.table tr:hover td {
+  background: var(--canvas);
+  cursor: pointer;
+}
+
+.badge {
+  display: inline-block;
+  background: var(--lifted);
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 3px 10px;
+  border-radius: var(--r-pill);
+  border: 1.5px solid var(--border);
+}
+
+/* Review detail */
+.reviewLayout {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 32px;
+  align-items: start;
+}
+
+.videoWrap {
+  background: #000;
+  border-radius: var(--r-card);
+  overflow: hidden;
+  aspect-ratio: 9/16;
+  max-height: 560px;
+}
+
+.video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.infoPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.section {
+  background: var(--white);
+  border-radius: var(--r-card);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: var(--shadow-nav);
+}
+
+.sectionTitle {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.field {
+  display: flex;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.fieldLabel {
+  color: var(--text-muted);
+  font-weight: 500;
+  width: 72px;
+  flex-shrink: 0;
+}
+
+.fieldValue {
+  color: var(--text-primary);
+}
+
+.checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.checkItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.checkItem input { accent-color: var(--ink); }
+
+.auto {
+  font-size: 11px;
+  font-weight: 600;
+  color: #1A7A2E;
+  margin-left: auto;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.approveBtn {
+  flex: 1;
+  background: var(--ink);
+  color: var(--canvas);
+  border: 1.5px solid var(--ink);
+  border-radius: var(--r-btn);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  padding: 12px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.approveBtn:hover { opacity: 0.85; }
+
+.rejectBtn {
+  flex: 1;
+  background: transparent;
+  color: #B91C1C;
+  border: 1.5px solid rgba(185,28,28,0.4);
+  border-radius: var(--r-btn);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.rejectBtn:hover { border-color: #B91C1C; }
+
+.approveBtn:disabled,
+.rejectBtn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.reasonInput {
+  background: var(--canvas);
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  color: var(--ink);
+  font-size: 13px;
+  padding: 10px 14px;
+  outline: none;
+  resize: vertical;
+  min-height: 80px;
+  font-family: var(--font);
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+}
+
+.reasonInput:focus { border-color: var(--ink); }

@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>베일 와이어프레임 — 소비자 모바일</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/[email protected]/dist/tabler-icons.min.css">
+<style>
+  :root {
+    --bg-page: #faf9f5;
+    --bg-card: #ffffff;
+    --bg-secondary: #f1efe8;
+    --bg-tertiary: #e8e6dd;
+    --bg-info: #e6f1fb;
+    --bg-success: #eaf3de;
+    --text-primary: #2c2c2a;
+    --text-secondary: #5f5e5a;
+    --text-tertiary: #888780;
+    --text-info: #185fa5;
+    --text-success: #3b6d11;
+    --border-tertiary: rgba(60,60,55,0.15);
+    --border-secondary: rgba(60,60,55,0.3);
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    background: var(--bg-page);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 32px 16px;
+    line-height: 1.5;
+  }
+  h1 {
+    font-size: 22px;
+    font-weight: 500;
+    text-align: center;
+    margin: 0 0 4px;
+  }
+  .subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-align: center;
+    margin: 0 0 28px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 280px));
+    gap: 24px;
+    justify-content: center;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .frame {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .phone {
+    width: 260px;
+    height: 540px;
+    background: #1a1a1a;
+    border-radius: 32px;
+    padding: 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  }
+  .screen {
+    width: 100%;
+    height: 100%;
+    background: var(--bg-card);
+    border-radius: 24px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .label {
+    margin-top: 12px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .label-id {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    font-weight: 400;
+    margin-left: 6px;
+  }
+  .statusbar {
+    height: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 14px;
+    font-size: 11px;
+    color: var(--text-secondary);
+    flex-shrink: 0;
+  }
+  .appbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    border-bottom: 0.5px solid var(--border-tertiary);
+    flex-shrink: 0;
+  }
+  .appbar h3 {
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0;
+  }
+  .appbar i {
+    font-size: 18px;
+    color: var(--text-secondary);
+  }
+  .body {
+    flex: 1;
+    padding: 14px;
+    overflow: hidden;
+    font-size: 12px;
+  }
+  .tabbar {
+    height: 48px;
+    border-top: 0.5px solid var(--border-tertiary);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .tabbar i {
+    font-size: 20px;
+    color: var(--text-tertiary);
+  }
+  .tabbar i.active {
+    color: var(--text-info);
+  }
+  .input-mock {
+    border: 0.5px solid var(--border-secondary);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    font-size: 12px;
+    color: var(--text-tertiary);
+    margin-bottom: 10px;
+    background: var(--bg-card);
+  }
+  .field-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin: 8px 0 4px;
+  }
+  .btn-primary {
+    background: var(--text-primary);
+    color: var(--bg-card);
+    border-radius: var(--radius-sm);
+    padding: 9px;
+    font-size: 12px;
+    text-align: center;
+    font-weight: 500;
+    margin-top: 6px;
+  }
+  .btn-outline {
+    border: 0.5px solid var(--border-secondary);
+    border-radius: var(--radius-sm);
+    padding: 9px;
+    font-size: 12px;
+    text-align: center;
+    margin-top: 6px;
+  }
+  .chip {
+    display: inline-block;
+    border: 0.5px solid var(--border-secondary);
+    border-radius: 14px;
+    padding: 4px 10px;
+    font-size: 11px;
+    margin: 0 4px 4px 0;
+    background: var(--bg-card);
+  }
+  .chip.on {
+    background: var(--text-primary);
+    color: var(--bg-card);
+    border-color: var(--text-primary);
+  }
+  .progress {
+    height: 3px;
+    background: var(--border-tertiary);
+    border-radius: 2px;
+    margin-bottom: 10px;
+  }
+  .progress > div {
+    height: 100%;
+    background: var(--text-primary);
+    border-radius: 2px;
+  }
+  .tiny {
+    font-size: 11px;
+    color: var(--text-tertiary);
+  }
+  .muted {
+    color: var(--text-secondary);
+  }
+  .feed-stage {
+    background: #2c2c2a;
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .feed-stage .play-icon {
+    color: rgba(255,255,255,0.5);
+    font-size: 56px;
+  }
+  .feed-side {
+    position: absolute;
+    right: 12px;
+    bottom: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    align-items: center;
+  }
+  .feed-side i {
+    color: white;
+    font-size: 28px;
+  }
+  .feed-side .heart-label {
+    color: white;
+    font-size: 10px;
+    margin-top: -4px;
+  }
+  .feed-close {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    color: white;
+    font-size: 22px;
+  }
+  .feed-seek {
+    position: absolute;
+    bottom: 16px;
+    left: 14px;
+    right: 14px;
+    height: 3px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 2px;
+  }
+  .feed-seek > div {
+    height: 100%;
+    width: 35%;
+    background: white;
+    border-radius: 2px;
+  }
+  .list-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 0.5px solid var(--border-tertiary);
+    font-size: 12px;
+  }
+  .thumb {
+    width: 40px;
+    height: 40px;
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-tertiary);
+  }
+  .thumb i {
+    font-size: 18px;
+  }
+  .badge {
+    display: inline-block;
+    background: var(--bg-info);
+    color: var(--text-info);
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+  .badge.success {
+    background: var(--bg-success);
+    color: var(--text-success);
+  }
+  .notif-row {
+    display: flex;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 0.5px solid var(--border-tertiary);
+    align-items: flex-start;
+    font-size: 12px;
+  }
+  .notif-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--text-info);
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+  .notif-dot.read {
+    background: transparent;
+  }
+  .filter-card {
+    border: 0.5px solid var(--border-tertiary);
+    border-radius: var(--radius-md);
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    background: var(--bg-card);
+  }
+  .filter-card.on {
+    border-color: var(--text-info);
+    background: var(--bg-info);
+  }
+  .filter-card.on i.label-icon,
+  .filter-card.on .check {
+    color: var(--text-info);
+  }
+  .placeholder-img {
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-sm);
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-tertiary);
+    margin-bottom: 12px;
+  }
+  .placeholder-img i {
+    font-size: 32px;
+  }
+  .info-banner {
+    background: var(--bg-info);
+    border-radius: var(--radius-md);
+    padding: 10px 12px;
+    font-size: 11px;
+    color: var(--text-info);
+    line-height: 1.5;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .info-banner i {
+    font-size: 14px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .external-banner {
+    background: var(--bg-success);
+    border-radius: var(--radius-md);
+    padding: 12px;
+    margin-top: 10px;
+  }
+  .external-banner-title {
+    font-size: 11px;
+    color: var(--text-success);
+    font-weight: 500;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .external-banner-msg {
+    font-size: 11px;
+    color: var(--text-success);
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+  .external-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--bg-card);
+    border: 0.5px solid var(--text-success);
+    color: var(--text-success);
+    border-radius: var(--radius-sm);
+    padding: 5px 10px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .legend {
+    max-width: 720px;
+    margin: 32px auto 0;
+    padding: 16px 20px;
+    background: var(--bg-card);
+    border: 0.5px solid var(--border-tertiary);
+    border-radius: var(--radius-lg);
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+  .legend strong {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+
+<h1>베일 — 소비자 모바일 와이어프레임</h1>
+<p class="subtitle">시연 시나리오 기반 / 9개 화면 / mid-fidelity</p>
+
+<div class="grid">
+
+  <div class="frame">
+    <div class="phone"><div class="screen">
+      <div class="statusbar"><span>9:41</span><span><i class="ti ti-wifi"></i></span></div>
+      <div class="body" style="padding-top: 32px; display: flex; flex-direction: column;">
+        <h3 style="font-size: 18px; font-weight: 500; margin: 0 0 4px;">베일</h3>
+        <p class="tiny" style="margin: 0 0 24px;">사전 정보 없이, 작품으로만</p>
+        <div class="field-label">이메일</div>
+        <div class="input-mock">name@email.com</div>
+        <div class="field-label">비밀번호</div>
+        <div class="input-mock">••••••••</div>
+        <div class="btn-primary">로그인</div>
+        <div class="btn-outline">회원가입</div>
+        <p class="tiny" style="text-align: center; margin-top: 18px;">비밀번호 찾기</p>
+      </div>
+    </div></div>
+    <div class="label">로그인<span class="label-id">S-01</span></div>
+  </div>
+
+  <div class="frame">
+    <div class="phone"><div class="screen">
+      <div class="statusbar"><span>9:41</span><span></span></div>
+      <div class="body" style="padding-top: 16px;">
+        <div class="progress"><div style="width: 50%"></div></div>
+        <p class="tiny" style="margin: 0 0 12px;">3 / 7 단계</p>
+        <h3 style="font-size: 15px; font-weight: 500; margin: 0 0 4px;">선호 장르를 골라주세요</h3>
+        <p class="tiny" style="margin: 0 0 12px;">다중 선택, 최소 1개</p>
+        <div>
+          <span class="chip on">드라마</span><span class="chip">액션</span><span class="chip on">스릴러</span>
+          <span class="chip">코미디</span><span class="chip">로맨스</span><span class="chip">호러</span>
+          <span class="chip on">SF</span><span class="chip">판타지</span><span class="chip">미스터리</span>
+          <span class="chip">다큐</span><span class="chip">애니</span><span class="chip">가족</span>
+          <span class="chip">음악</span>
+        </div>
+        <div class="btn-primary" style="margin-top: 16px;">다음</div>
+        <p class="tiny" style="text-align: center; margin-top: 10px; line-height: 1.5;">입력하신 정보는 추천과<br>창작자 통계에만 활용됩니다</p>
+      </div>
+    </div></div>
+    <div class="label">취향 온보딩<span class="label-id">S-03</span></div>
+  </div>
+
+  <div class="frame">
+    <div class="phone"><div class="screen">
+      <div class="statusbar"><span>9:41</span><span></span></div>
+      <div class="body" style="padding-top: 20px;">
+        <h3 style="font-size: 15px; font-weight: 500; margin: 0 0 4px;">어떤 작품을 볼까요?</h3>
+        <p class="tiny" style="margin: 0 0 14px;">최소 1개 이상 선택</p>
+        <div class="filter-card on">
+          <i class="ti ti-movie label-icon" style="font-size: 18px;"></i>
+          <span style="flex: 1;">영화</span>
+          <i class="ti ti-check check" style="font-size: 14px;"></i>
+        </div>
+        <div class="filter-card on">
+          <i class="ti ti-device-tv label-icon" style="font-size: 18px;"></i>
+          <span style="flex: 1;">드라마</span>
+          <i class="ti ti-check check" style="font-size: 14px;"></i>
+        </div>
+        <div class="filter-card">
+          <i class="ti ti-book label-icon" style="font-size: 18px; color: var(--text-secondary);"></i>
+          <span style="flex: 1;">책</span>
+        </div>
+        <div class="filter-card">
+          <i class="ti ti-masks-theater label-icon" style="font-size: 18px; color: var(--text-secondary);"></i>
+          <span style="flex: 1;">공연</span>
+        </div>
+        <div class="btn-primary" style="margin-top: 14px;">탐색 시작</div>
+      </div>
+    </div></div>
+    <div class="label">콘텐츠 종류 필터<span class="label-id">S-04</span></div>
+  </div>
+
+  <div class="frame">
+    <div class="phone"><div class="screen" style="background: #2c2c2a;">
+      <div class="statusbar" style="color: rgba(255,255,255,0.6);"><span>9:41</span><span></span></div>
+      <div class="feed-stage">
+        <i class="ti ti-player-play play-icon"></i>
+        <div class="feed-close"><i class="ti ti-x"></i></div>
+        <div class="feed-side">
+          <div style="display: flex; flex-direction: column; align-items: center;">
+            <i class="ti ti-heart"></i>
+            <span class="heart-label">관심</span>
+          </div>
+          <i class="ti ti-volume"></i>
+        </div>
+        <div class="feed-seek"><div></div></div>
+      </div>
+    </div></div>
+    <div class="label">블라인드 탐색<span class="label-id">S-05/06</span></div>
+  </div>
+
+  <div class="frame">
+    <div class="phone"><div class="screen">
+      <div class="statusbar"><span>9:41</span><span></span></div>
+      <div class="appbar"><i class="ti ti-arrow-left"></i><h3>작품 정보</h3><i class="ti ti-share"></i></div>
+      <div class="body">
+        <div class="placeholder-img"><i class="ti ti-photo"></i></div>
+        <h3 style="font-size: 15px; margin: 0 0 4px; font-weight: 500;">붉은 정원의 밤</h3>
+        <p class="tiny" style="margin: 0 0 8px;">감독 김지원 · 2026 · 15세</p>
+        <div style="margin-bottom: 10px;">
+          <span class="chip on" style="font-size: 10px;">드라마</span>
+          <span class="chip on" style="font-size: 10px;">스릴러</span>
+        </div>
+        <p style="font-size: 11px; line-height: 1.6; margin: 0 0 10px;">한 가족이 정원에서 발견한 비밀, 그리고 시작되는 추적. 진실에 다가갈수록 균열이 깊어진다.</p>
+        <div class="info-banner">
+          <i class="ti ti-heart"></i>
+          <span>관심 목록에 추가되었습니다. 창작자가 외부 상영·구매 정보를 안내할 수 있습니다.</span>
+        </div>
+      </div>
+      <div class="tabbar">
+        <i class="ti ti-compass active"></i><i class="ti ti-heart"></i><i class="ti ti-bell"></i><i class="ti ti-user"></i>
+      </div>
+    </div></div>
+    <div class="label">베일 해제 / 상세<span class="label-id">S-07</span></div>
+  </div>
+
+  <div class="frame">
+    <div class="phone"><div class="screen">
+      <div class="statusbar"><span>9:41</span><span></span></div>
+      <div class="appbar"><i class="ti ti-arrow-left"></i><h3>작품 정보</h3><i class="ti ti-share"></i></div>
+      <div class="body">
+        <div class="placeholder-img" style="height: 80px;"><i class="ti ti-photo"></i></div>
+        <h3 style="font-size: 14px; margin: 0 0 4px; font-weight: 500;">붉은 정원의 밤</h3>
+        <p class="tiny" style="margin: 0 0 8px;">감독 김지원 · 2026 · 15세</p>
+        <p style="font-size: 11px; line-height: 1.6; margin: 0 0 8px;">한 가족이 정원에서 발견한 비밀...</p>
+        <div class="external-banner">
+          <div class="external-banner-title">
+            <i class="ti ti-mail"></i>
+            창작자가 보낸 안내
+          </div>
+          <p class="external-banner-msg">"3월 15일부터 인디플러스에서 정식 상영합니다. 와주신 분들께 깊이 감사드려요."</p>
+          <a class="external-link"><i class="ti ti-external-link" style="font-size: 12px;"></i>예매하기</a>
+        </div>
+      </div>
+      <div class="tabbar">
+        <i class="ti ti-compass active"></i><i class="ti ti-heart"></i><i class="ti ti-bell"></i><i class="ti ti-user"></i>
+      </div>
+    </div></div>
+    <div class="label">상세 (안내 도착 후)<span class="label-id">S-07</span></div>
+  </div>
+
+  <div class="frame">
+    <div class="phone"><div class="screen">
+      <div class="statusbar"><span>9:41</span><span></span></div>
+      <div class="appbar"><h3>내 관심</h3><i class="ti ti-filter"></i></div>
+      <div class="body">
+        <div class="list-row">
+          <div class="thumb"><i class="ti ti-photo"></i></div>
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-weight: 500;">붉은 정원의 밤</div>
+            <div class="tiny">2일 전</div>
+          </div>
+          <span class="badge success">안내 도착</span>
+        </div>
+        <div class="list-row">
+          <div class="thumb"><i class="ti ti-photo"></i></div>
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-weight: 500;">서울의 우체부</div>
+            <div class="tiny">5일 전</div>
+          </div>
+        </div>
+        <div class="list-row">
+          <div class="thumb"><i class="ti ti-photo"></i></div>
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-weight: 500;">파랑의 기억</div>
+            <div class="tiny">1주 전</div>
+          </div>
+        </div>
+        <div class="list-row">
+          <div class="thumb"><i class="ti ti-photo"></i></div>
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-weight: 500;">이름 없는 계절</div>
+            <div class="tiny">2주 전</div>
+          </div>
+        </div>
+      </div>
+      <div class="tabbar">
+        <i class="ti ti-compass"></i><i class="ti ti-heart active"></i><i class="ti ti-bell"></i><i class="ti ti-user"></i>
+      </div>
+    </div></div>
+    <div class="label">내 관심 목록<span class="label-id">S-08</span></div>
+  </div>
+
+  <div class="frame">
+    <div class="phone"><div class="screen">
+      <div class="statusbar"><span>9:41</span><span></span></div>
+      <div class="appbar"><h3>알림</h3><span class="tiny">모두 읽음</span></div>
+      <div class="body">
+        <div class="notif-row">
+          <div class="notif-dot"></div>
+          <div style="flex: 1;">
+            <div>관심 누른 작품의 새 안내가 도착했습니다</div>
+            <div class="tiny" style="margin-top: 2px;">2분 전</div>
+          </div>
+        </div>
+        <div class="notif-row">
+          <div class="notif-dot"></div>
+          <div style="flex: 1;">
+            <div>새 작품이 추가되었습니다</div>
+            <div class="tiny" style="margin-top: 2px;">3시간 전</div>
+          </div>
+        </div>
+        <div class="notif-row">
+          <div class="notif-dot read"></div>
+          <div style="flex: 1;">
+            <div class="muted">작품 안내가 도착했습니다</div>
+            <div class="tiny" style="margin-top: 2px;">어제</div>
+          </div>
+        </div>
+        <div class="notif-row">
+          <div class="notif-dot read"></div>
+          <div style="flex: 1;">
+            <div class="muted">관심 목록에 새 작품 추천</div>
+            <div class="tiny" style="margin-top: 2px;">3일 전</div>
+          </div>
+        </div>
+      </div>
+      <div class="tabbar">
+        <i class="ti ti-compass"></i><i class="ti ti-heart"></i><i class="ti ti-bell active"></i><i class="ti ti-user"></i>
+      </div>
+    </div></div>
+    <div class="label">알림 목록<span class="label-id">S-09</span></div>
+  </div>
+
+  <div class="frame">
+    <div class="phone"><div class="screen">
+      <div class="statusbar"><span>9:41</span><span></span></div>
+      <div class="appbar"><i class="ti ti-arrow-left"></i><h3>설정</h3><span></span></div>
+      <div class="body" style="padding: 0;">
+        <div style="padding: 12px 14px; border-bottom: 0.5px solid var(--border-tertiary);">
+          <div class="tiny" style="margin-bottom: 4px;">계정</div>
+          <div style="font-size: 13px;">name@email.com</div>
+        </div>
+        <div style="padding: 12px 14px; border-bottom: 0.5px solid var(--border-tertiary); display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 13px;">선호 장르</div>
+            <div class="tiny" style="margin-top: 2px;">드라마, 스릴러, SF</div>
+          </div>
+          <i class="ti ti-chevron-right" style="color: var(--text-tertiary); font-size: 16px;"></i>
+        </div>
+        <div style="padding: 12px 14px; border-bottom: 0.5px solid var(--border-tertiary); display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 13px;">콘텐츠 종류</div>
+            <div class="tiny" style="margin-top: 2px;">영화, 드라마</div>
+          </div>
+          <i class="ti ti-chevron-right" style="color: var(--text-tertiary); font-size: 16px;"></i>
+        </div>
+        <div style="padding: 12px 14px; border-bottom: 0.5px solid var(--border-tertiary); display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 13px;">지역</div>
+            <div class="tiny" style="margin-top: 2px;">서울</div>
+          </div>
+          <i class="ti ti-chevron-right" style="color: var(--text-tertiary); font-size: 16px;"></i>
+        </div>
+        <div style="padding: 12px 14px; border-bottom: 0.5px solid var(--border-tertiary);">
+          <div style="font-size: 13px;">알림 설정</div>
+        </div>
+        <div style="padding: 12px 14px; border-bottom: 0.5px solid var(--border-tertiary);">
+          <div style="font-size: 13px;">이용약관</div>
+        </div>
+        <div style="padding: 12px 14px; color: var(--text-secondary);">
+          <div style="font-size: 13px;">로그아웃</div>
+        </div>
+      </div>
+      <div class="tabbar">
+        <i class="ti ti-compass"></i><i class="ti ti-heart"></i><i class="ti ti-bell"></i><i class="ti ti-user active"></i>
+      </div>
+    </div></div>
+    <div class="label">설정<span class="label-id">S-10</span></div>
+  </div>
+
+</div>
+
+<div class="legend">
+  <strong>시연 흐름</strong> — 로그인 (S-01) → 온보딩 (S-03) → 콘텐츠 종류 필터 (S-04) → 블라인드 탐색 풀스크린 피드 (S-05/06) → 관심 누름 → 베일 해제 (S-07) → <strong>창작자가 외부 안내 발송</strong> → 알림 수신 (S-09) → 상세에서 안내·외부 링크 확인 (S-07 안내 도착 후). 내 관심 목록 (S-08), 설정 (S-10)은 메인 네비게이션에서 진입.<br><br>
+  <strong>변경 사항</strong> — 풀버전 재생·시청 종료 화면 제거. 시사회 초대 → 외부 안내(외부 상영·구매·VOD 링크 안내) 재정의.
+</div>
+
+</body>
+</html>

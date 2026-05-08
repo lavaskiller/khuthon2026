@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>베일 와이어프레임 — 관리자 데스크톱</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/[email protected]/dist/tabler-icons.min.css">
+<style>
+  :root {
+    --bg-page: #faf9f5;
+    --bg-card: #ffffff;
+    --bg-secondary: #f1efe8;
+    --bg-tertiary: #e8e6dd;
+    --bg-info: #e6f1fb;
+    --bg-success: #eaf3de;
+    --bg-warning: #faeeda;
+    --bg-danger: #fcebeb;
+    --text-primary: #2c2c2a;
+    --text-secondary: #5f5e5a;
+    --text-tertiary: #888780;
+    --text-info: #185fa5;
+    --text-success: #3b6d11;
+    --text-warning: #854f0b;
+    --text-danger: #a32d2d;
+    --border-tertiary: rgba(60,60,55,0.15);
+    --border-secondary: rgba(60,60,55,0.3);
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    background: var(--bg-page);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 32px 24px 48px;
+    line-height: 1.5;
+  }
+  h1 {
+    font-size: 22px;
+    font-weight: 500;
+    text-align: center;
+    margin: 0 0 4px;
+  }
+  .subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-align: center;
+    margin: 0 0 32px;
+  }
+  .stack {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .frame {
+    display: flex;
+    flex-direction: column;
+  }
+  .frame-label {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .frame-label .id {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    font-weight: 400;
+    background: var(--bg-secondary);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .desktop {
+    background: var(--bg-card);
+    border: 0.5px solid var(--border-tertiary);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .browser-bar {
+    height: 32px;
+    background: var(--bg-secondary);
+    border-bottom: 0.5px solid var(--border-tertiary);
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    gap: 8px;
+  }
+  .browser-bar .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--border-secondary);
+  }
+  .url-pill {
+    flex: 1;
+    height: 20px;
+    background: var(--bg-card);
+    border-radius: 10px;
+    margin: 0 80px;
+    font-size: 11px;
+    color: var(--text-tertiary);
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+  }
+  .app {
+    display: flex;
+    height: 720px;
+  }
+  .sidebar {
+    width: 220px;
+    background: var(--bg-secondary);
+    border-right: 0.5px solid var(--border-tertiary);
+    padding: 20px 0;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar-brand {
+    font-size: 18px;
+    font-weight: 500;
+    padding: 0 20px 6px;
+  }
+  .sidebar-role {
+    font-size: 11px;
+    color: var(--text-warning);
+    background: var(--bg-warning);
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin: 0 20px 14px;
+    display: inline-block;
+    width: fit-content;
+    font-weight: 500;
+  }
+  .sidebar-section-label {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    padding: 12px 20px 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    border-top: 0.5px solid var(--border-tertiary);
+  }
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 20px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    cursor: pointer;
+  }
+  .sidebar-item.active {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    font-weight: 500;
+    border-right: 2px solid var(--text-primary);
+  }
+  .sidebar-item i {
+    font-size: 16px;
+  }
+  .sidebar-item .count {
+    margin-left: auto;
+    background: var(--text-warning);
+    color: var(--bg-card);
+    font-size: 11px;
+    padding: 1px 7px;
+    border-radius: 9px;
+    font-weight: 500;
+  }
+  .sidebar-bottom {
+    margin-top: auto;
+    padding: 12px 20px;
+    border-top: 0.5px solid var(--border-tertiary);
+  }
+  .sidebar-bottom .user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+  }
+  .avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--bg-warning);
+    color: var(--text-warning);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+  .main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 28px 36px;
+  }
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 0.5px solid var(--border-tertiary);
+  }
+  .page-header h2 {
+    font-size: 22px;
+    font-weight: 500;
+    margin: 0 0 4px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .page-header h2 .pending-pill {
+    font-size: 12px;
+    background: var(--bg-warning);
+    color: var(--text-warning);
+    padding: 3px 12px;
+    border-radius: 12px;
+    font-weight: 500;
+  }
+  .page-header .desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+  .btn {
+    background: var(--bg-card);
+    border: 0.5px solid var(--border-secondary);
+    border-radius: var(--radius-sm);
+    padding: 8px 16px;
+    font-size: 13px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-primary);
+    font-family: inherit;
+  }
+  .btn.primary {
+    background: var(--text-primary);
+    color: var(--bg-card);
+    border-color: var(--text-primary);
+  }
+  .btn.success {
+    background: var(--text-success);
+    color: var(--bg-card);
+    border-color: var(--text-success);
+  }
+  .btn.danger {
+    background: var(--bg-card);
+    color: var(--text-danger);
+    border-color: var(--text-danger);
+  }
+  .btn-sm {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+  .btn-lg {
+    padding: 11px 22px;
+    font-size: 14px;
+  }
+  .filter-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    align-items: center;
+  }
+  .search-box {
+    display: flex;
+    align-items: center;
+    background: var(--bg-card);
+    border: 0.5px solid var(--border-secondary);
+    border-radius: var(--radius-sm);
+    padding: 0 10px;
+    flex: 1;
+    max-width: 280px;
+  }
+  .search-box input {
+    border: none;
+    background: transparent;
+    flex: 1;
+    padding: 8px 6px;
+    font-size: 13px;
+    outline: none;
+    font-family: inherit;
+  }
+  .search-box i {
+    font-size: 16px;
+    color: var(--text-tertiary);
+  }
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .table th {
+    text-align: left;
+    font-weight: 500;
+    color: var(--text-secondary);
+    font-size: 12px;
+    padding: 10px 12px;
+    border-bottom: 0.5px solid var(--border-tertiary);
+    background: var(--bg-secondary);
+  }
+  .table td {
+    padding: 12px;
+    border-bottom: 0.5px solid var(--border-tertiary);
+  }
+  .table tr:hover td {
+    background: var(--bg-secondary);
+  }
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .badge.pending {
+    background: var(--bg-warning);
+    color: var(--text-warning);
+  }
+  .review-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 28px;
+  }
+  .video-stage {
+    background: #1a1a1a;
+    border-radius: var(--radius-md);
+    aspect-ratio: 9 / 16;
+    max-height: 420px;
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .video-stage i.play {
+    color: rgba(255,255,255,0.5);
+    font-size: 64px;
+  }
+  .video-controls {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    font-size: 11px;
+  }
+  .video-controls .bar {
+    flex: 1;
+    height: 3px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 2px;
+  }
+  .video-controls .bar > div {
+    height: 100%;
+    width: 35%;
+    background: white;
+    border-radius: 2px;
+  }
+  .video-meta {
+    margin-top: 14px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-align: center;
+  }
+  .info-section {
+    background: var(--bg-card);
+    border: 0.5px solid var(--border-tertiary);
+    border-radius: var(--radius-md);
+    padding: 16px 18px;
+    margin-bottom: 16px;
+  }
+  .info-section h3 {
+    font-size: 13px;
+    font-weight: 500;
+    margin: 0 0 12px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  .info-row {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    padding: 6px 0;
+    font-size: 13px;
+    border-bottom: 0.5px solid var(--border-tertiary);
+  }
+  .info-row:last-child {
+    border-bottom: none;
+  }
+  .info-row .key {
+    color: var(--text-secondary);
+  }
+  .info-row .val {
+    font-weight: 500;
+  }
+  .synopsis {
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 0;
+    color: var(--text-primary);
+  }
+  .genre-chip {
+    display: inline-block;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border-radius: 12px;
+    padding: 3px 10px;
+    font-size: 11px;
+    margin-right: 4px;
+  }
+  .checklist {
+    background: var(--bg-card);
+    border: 0.5px solid var(--border-tertiary);
+    border-radius: var(--radius-md);
+    padding: 18px;
+    position: sticky;
+    top: 0;
+  }
+  .checklist h3 {
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0 0 12px;
+  }
+  .check-item {
+    display: flex;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 0.5px solid var(--border-tertiary);
+    align-items: flex-start;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .check-item:last-child {
+    border-bottom: none;
+  }
+  .check-box {
+    width: 18px;
+    height: 18px;
+    border: 0.5px solid var(--border-secondary);
+    border-radius: 3px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+    cursor: pointer;
+  }
+  .check-box.on {
+    background: var(--text-success);
+    border-color: var(--text-success);
+    color: var(--bg-card);
+  }
+  .check-box.auto {
+    background: var(--text-success);
+    border-color: var(--text-success);
+    color: var(--bg-card);
+  }
+  .check-box i {
+    font-size: 14px;
+  }
+  .check-text {
+    flex: 1;
+  }
+  .auto-tag {
+    display: inline-block;
+    font-size: 10px;
+    color: var(--text-success);
+    background: var(--bg-success);
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-left: 4px;
+    font-weight: 500;
+  }
+  .review-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 0.5px solid var(--border-tertiary);
+  }
+  .review-actions button {
+    flex: 1;
+    justify-content: center;
+  }
+  .reject-reason {
+    margin-top: 14px;
+    padding: 14px;
+    background: var(--bg-danger);
+    border-radius: var(--radius-md);
+  }
+  .reject-reason .label {
+    font-size: 12px;
+    color: var(--text-danger);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .reject-reason textarea {
+    width: 100%;
+    border: 0.5px solid var(--border-secondary);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    font-size: 12px;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 70px;
+    background: var(--bg-card);
+  }
+  .empty-state {
+    text-align: center;
+    padding: 64px 24px;
+    color: var(--text-secondary);
+  }
+  .empty-state i {
+    font-size: 40px;
+    color: var(--text-tertiary);
+    margin-bottom: 12px;
+  }
+  .legend {
+    max-width: 1180px;
+    margin: 32px auto 0;
+    padding: 16px 20px;
+    background: var(--bg-card);
+    border: 0.5px solid var(--border-tertiary);
+    border-radius: var(--radius-lg);
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+  .legend strong {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+
+<h1>베일 — 관리자 데스크톱 와이어프레임</h1>
+<p class="subtitle">2개 화면 / mid-fidelity</p>
+
+<div class="stack">
+
+<div class="frame">
+<div class="frame-label">미심사 컨텐츠 리스트<span class="id">A-01</span></div>
+<div class="desktop">
+<div class="browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><div class="url-pill">veil.app/admin/review</div></div>
+<div class="app">
+<aside class="sidebar">
+<div class="sidebar-brand">베일</div>
+<div class="sidebar-role">관리자</div>
+<div class="sidebar-section-label">심사</div>
+<div class="sidebar-item active"><i class="ti ti-clipboard-list"></i>미심사<span class="count">7</span></div>
+<div class="sidebar-item"><i class="ti ti-history"></i>심사 이력</div>
+<div class="sidebar-bottom">
+<div class="user"><div class="avatar">AD</div><div><div style="font-weight: 500;">관리자</div><div style="color: var(--text-tertiary); font-size: 11px;">[email protected]</div></div></div>
+</div>
+</aside>
+<div class="main">
+<div class="page-header">
+<div>
+<h2>미심사 컨텐츠<span class="pending-pill">7건 대기 중</span></h2>
+<p class="desc">오래된 업로드부터 순서대로 심사하세요</p>
+</div>
+</div>
+<div class="filter-bar">
+<div class="search-box">
+<i class="ti ti-search"></i>
+<input placeholder="제목 또는 창작자로 검색" />
+</div>
+<button class="btn btn-sm">콘텐츠 종류 ▾</button>
+<button class="btn btn-sm">기간 ▾</button>
+<div style="margin-left: auto; font-size: 12px; color: var(--text-secondary);">정렬: 오래된 순 ▾</div>
+</div>
+<table class="table">
+<thead>
+<tr><th>#</th><th>창작자</th><th>콘텐츠 종류</th><th>티저 길이</th><th>업로드 일시</th><th>대기 시간</th><th></th></tr>
+</thead>
+<tbody>
+<tr>
+<td style="color: var(--text-tertiary);">001</td>
+<td><span style="font-family: monospace; font-size: 12px;">creator_***@email.com</span></td>
+<td>드라마</td>
+<td>28초</td>
+<td style="color: var(--text-secondary);">2026-03-10 14:22</td>
+<td><span style="color: var(--text-warning); font-weight: 500;">2일 6시간</span></td>
+<td><button class="btn btn-sm primary">심사 진입 <i class="ti ti-arrow-right"></i></button></td>
+</tr>
+<tr>
+<td style="color: var(--text-tertiary);">002</td>
+<td><span style="font-family: monospace; font-size: 12px;">creator_***@email.com</span></td>
+<td>영화</td>
+<td>42초</td>
+<td style="color: var(--text-secondary);">2026-03-11 09:15</td>
+<td><span style="color: var(--text-warning); font-weight: 500;">1일 11시간</span></td>
+<td><button class="btn btn-sm primary">심사 진입 <i class="ti ti-arrow-right"></i></button></td>
+</tr>
+<tr>
+<td style="color: var(--text-tertiary);">003</td>
+<td><span style="font-family: monospace; font-size: 12px;">creator_***@email.com</span></td>
+<td>숏폼</td>
+<td>18초</td>
+<td style="color: var(--text-secondary);">2026-03-11 16:48</td>
+<td><span style="color: var(--text-secondary);">1일 4시간</span></td>
+<td><button class="btn btn-sm primary">심사 진입 <i class="ti ti-arrow-right"></i></button></td>
+</tr>
+<tr>
+<td style="color: var(--text-tertiary);">004</td>
+<td><span style="font-family: monospace; font-size: 12px;">creator_***@email.com</span></td>
+<td>영화</td>
+<td>35초</td>
+<td style="color: var(--text-secondary);">2026-03-12 11:32</td>
+<td style="color: var(--text-secondary);">9시간</td>
+<td><button class="btn btn-sm primary">심사 진입 <i class="ti ti-arrow-right"></i></button></td>
+</tr>
+<tr>
+<td style="color: var(--text-tertiary);">005</td>
+<td><span style="font-family: monospace; font-size: 12px;">creator_***@email.com</span></td>
+<td>드라마</td>
+<td>22초</td>
+<td style="color: var(--text-secondary);">2026-03-12 14:08</td>
+<td style="color: var(--text-secondary);">6시간</td>
+<td><button class="btn btn-sm primary">심사 진입 <i class="ti ti-arrow-right"></i></button></td>
+</tr>
+<tr>
+<td style="color: var(--text-tertiary);">006</td>
+<td><span style="font-family: monospace; font-size: 12px;">kim_jw_***@email.com</span></td>
+<td>영화</td>
+<td>32초</td>
+<td style="color: var(--text-secondary);">2026-03-12 18:04</td>
+<td style="color: var(--text-secondary);">2시간</td>
+<td><button class="btn btn-sm primary">심사 진입 <i class="ti ti-arrow-right"></i></button></td>
+</tr>
+<tr>
+<td style="color: var(--text-tertiary);">007</td>
+<td><span style="font-family: monospace; font-size: 12px;">creator_***@email.com</span></td>
+<td>숏폼</td>
+<td>15초</td>
+<td style="color: var(--text-secondary);">2026-03-12 19:50</td>
+<td style="color: var(--text-secondary);">25분</td>
+<td><button class="btn btn-sm primary">심사 진입 <i class="ti ti-arrow-right"></i></button></td>
+</tr>
+</tbody>
+</table>
+<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px; font-size: 12px; color: var(--text-secondary);">
+<span>1-7 / 7건</span>
+<div style="display: flex; gap: 6px;">
+<button class="btn btn-sm" disabled style="opacity: 0.4;"><i class="ti ti-chevron-left"></i></button>
+<button class="btn btn-sm" disabled style="opacity: 0.4;"><i class="ti ti-chevron-right"></i></button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="frame">
+<div class="frame-label">컨텐츠 심사 화면<span class="id">A-02</span></div>
+<div class="desktop">
+<div class="browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><div class="url-pill">veil.app/admin/review/006</div></div>
+<div class="app">
+<aside class="sidebar">
+<div class="sidebar-brand">베일</div>
+<div class="sidebar-role">관리자</div>
+<div class="sidebar-section-label">심사</div>
+<div class="sidebar-item active"><i class="ti ti-clipboard-list"></i>미심사<span class="count">7</span></div>
+<div class="sidebar-item"><i class="ti ti-history"></i>심사 이력</div>
+<div class="sidebar-bottom">
+<div class="user"><div class="avatar">AD</div><div><div style="font-weight: 500;">관리자</div></div></div>
+</div>
+</aside>
+<div class="main">
+<div class="page-header">
+<div>
+<div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; cursor: pointer;">← 미심사 리스트</div>
+<h2>심사 #006</h2>
+<p class="desc">2026-03-12 18:04 업로드 · 2시간 전</p>
+</div>
+<div style="display: flex; gap: 8px;">
+<button class="btn btn-sm"><i class="ti ti-chevron-left"></i>이전</button>
+<button class="btn btn-sm">다음<i class="ti ti-chevron-right"></i></button>
+</div>
+</div>
+
+<div class="review-grid">
+
+<div>
+<div class="video-stage">
+<i class="ti ti-player-play play"></i>
+<div class="video-controls">
+<i class="ti ti-player-pause" style="font-size: 16px;"></i>
+<span>0:11</span>
+<div class="bar"><div></div></div>
+<span>0:32</span>
+<i class="ti ti-volume" style="font-size: 16px;"></i>
+<i class="ti ti-arrows-maximize" style="font-size: 16px;"></i>
+</div>
+</div>
+<div class="video-meta">티저 영상 · 32초 · mp4 · 42.3 MB</div>
+
+<div class="info-section" style="margin-top: 20px;">
+<h3>비공개 정보</h3>
+<div class="info-row"><div class="key">제목</div><div class="val">붉은 정원의 밤</div></div>
+<div class="info-row"><div class="key">장르</div><div class="val"><span class="genre-chip">드라마</span><span class="genre-chip">스릴러</span></div></div>
+<div class="info-row"><div class="key">감독</div><div class="val">김지원</div></div>
+<div class="info-row"><div class="key">개봉일</div><div class="val">2026-03-15</div></div>
+<div class="info-row"><div class="key">연령 등급</div><div class="val">15세 이상 관람가</div></div>
+<div class="info-row"><div class="key">외부 링크</div><div class="val" style="color: var(--text-info); font-weight: 400;">— 미입력</div></div>
+</div>
+
+<div class="info-section">
+<h3>시놉시스</h3>
+<p class="synopsis">한 가족이 정원에서 발견한 비밀, 그리고 시작되는 추적. 진실에 다가갈수록 균열이 깊어진다.</p>
+</div>
+
+<div class="info-section">
+<h3>창작자</h3>
+<div class="info-row"><div class="key">이메일</div><div class="val" style="font-family: monospace; font-size: 12px; font-weight: 400;">[email protected]</div></div>
+<div class="info-row"><div class="key">가입일</div><div class="val" style="font-weight: 400;">2025-11-08</div></div>
+<div class="info-row"><div class="key">누적 업로드</div><div class="val" style="font-weight: 400;">5건 (승인 3 · 반려 1 · 대기 1)</div></div>
+</div>
+</div>
+
+<div>
+<div class="checklist">
+<h3>심사 체크리스트</h3>
+<div class="check-item">
+<div class="check-box auto"><i class="ti ti-check"></i></div>
+<div class="check-text">티저 길이가 콘텐츠 종류별 규정을 충족하는가?<span class="auto-tag">자동 통과</span><div style="font-size: 11px; color: var(--text-tertiary); margin-top: 2px;">영화 15-45초 · 현재 32초</div></div>
+</div>
+<div class="check-item">
+<div class="check-box on"><i class="ti ti-check"></i></div>
+<div class="check-text">티저 영상에 워터마크/로고/창작자 식별 요소가 없는가?</div>
+</div>
+<div class="check-item">
+<div class="check-box on"><i class="ti ti-check"></i></div>
+<div class="check-text">부적절한 컨텐츠(폭력·선정성·혐오 등)가 심의에 맞는가?</div>
+</div>
+<div class="check-item">
+<div class="check-box"></div>
+<div class="check-text">비공개 정보(제목·시놉시스·장르)가 작품과 일치하는가?</div>
+</div>
+
+<div class="review-actions">
+<button class="btn danger btn-lg"><i class="ti ti-x"></i>반려</button>
+<button class="btn success btn-lg"><i class="ti ti-check"></i>승인</button>
+</div>
+
+<div class="reject-reason">
+<div class="label"><i class="ti ti-alert-triangle" style="font-size: 14px; vertical-align: -2px;"></i> 반려 시 사유 (체크 안 한 항목 자동 첨부됨)</div>
+<textarea placeholder="추가 사유를 입력하세요. 창작자에게 전달됩니다."></textarea>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+
+<div class="legend">
+<strong>관리자 시연 흐름</strong> — 미심사 리스트 (A-01)에서 가장 오래된 컨텐츠 진입 → 심사 화면 (A-02)에서 티저 재생 + 비공개 정보 검토 + 체크리스트 확인 → 승인 또는 반려. 승인 시 컨텐츠는 즉시 블라인드 피드 노출 시작 + 창작자에게 알림 발송. 반려 시 체크 안 한 항목과 입력한 사유가 함께 창작자 알림에 포함.<br><br>
+<strong>관리자 화면의 정보 비대칭</strong> — 관리자는 비공개 정보 전체(제목·시놉시스·장르·감독·연령등급·창작자 이메일)를 볼 수 있습니다. 소비자는 베일 해제 시점까지 이 정보 중 어느 것도 볼 수 없습니다.
+</div>
+
+</body>
+</html>
