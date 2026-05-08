@@ -12,9 +12,16 @@ class UserCreate(BaseModel):
     password: str
     birth_date: date
     gender: Gender
-    region: str
-    genres: list[Genre] = []
+    region: str | None = None
+    genres: list[Genre]
     content_types: list[ContentType] = []
+
+    @field_validator("genres")
+    @classmethod
+    def _genres_not_empty(cls, v: list[Genre]) -> list[Genre]:
+        if not v:
+            raise ValueError("At least one genre is required")
+        return v
 
 
 class UserUpdate(BaseModel):
@@ -24,6 +31,13 @@ class UserUpdate(BaseModel):
     region: str | None = None
     genres: list[Genre] | None = None
     content_types: list[ContentType] | None = None
+
+    @field_validator("genres")
+    @classmethod
+    def _genres_not_empty(cls, v: list[Genre] | None) -> list[Genre] | None:
+        if v is not None and not v:
+            raise ValueError("At least one genre is required")
+        return v
 
 
 class UserRoleUpdate(BaseModel):
@@ -37,7 +51,7 @@ class UserRead(BaseModel):
     role: UserRole
     birth_date: date
     gender: Gender
-    region: str
+    region: str | None
     is_active: bool
     genres: list[Genre] = []
     content_types: list[ContentType] = []

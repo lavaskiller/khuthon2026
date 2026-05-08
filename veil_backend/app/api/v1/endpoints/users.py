@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.dependencies import get_current_active_user, require_roles
@@ -35,9 +35,11 @@ async def list_users(
 @router.get("/{user_id}", response_model=UserRead)
 async def get_user(
     user_id: int,
-    _: User = Depends(require_roles(UserRole.ADMIN)),
+    current_user: User = Depends(get_current_active_user),
     db: AsyncSession = Depends(get_db),
 ):
+    if current_user.role != UserRole.ADMIN and current_user.id != user_id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Insufficient permissions")
     return await UserService(db).get_user(user_id)
 
 

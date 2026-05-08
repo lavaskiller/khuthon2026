@@ -26,6 +26,8 @@ class Settings(BaseSettings):
 
     CORS_ORIGINS: list[str]
 
+    UPLOAD_DIR: str
+
     class Config:
         env_file = ".env"
 

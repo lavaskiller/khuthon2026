@@ -13,11 +13,12 @@ class UserService:
         self.repo = UserRepository(db)
 
     async def update_me(self, user: User, payload: UserUpdate) -> User:
-        simple_fields = payload.model_dump(
-            exclude_none=True, exclude={"genres", "content_types"}
-        )
-        for field, value in simple_fields.items():
-            setattr(user, field, value)
+        SIMPLE_FIELDS = {"name", "birth_date", "gender", "region"}
+        for field in SIMPLE_FIELDS:
+            value = getattr(payload, field)
+            # None은 "변경 안 함"이지만 region은 nullable이므로 명시적으로 set된 경우 반영
+            if field in payload.model_fields_set:
+                setattr(user, field, value)
 
         if payload.genres is not None:
             await self.repo.db.execute(

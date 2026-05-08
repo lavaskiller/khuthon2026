@@ -8,6 +8,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.base import Base
 
 if TYPE_CHECKING:
+    from app.models.content import Content
     from app.models.onboarding import UserContentType, UserGenre
 
 
@@ -33,7 +34,7 @@ class User(Base):
     role: Mapped[UserRole] = mapped_column(Enum(UserRole), default=UserRole.USER, nullable=False)
     birth_date: Mapped[date] = mapped_column(Date, nullable=False)
     gender: Mapped[Gender] = mapped_column(Enum(Gender), nullable=False)
-    region: Mapped[str] = mapped_column(String(100), nullable=False)
+    region: Mapped[str | None] = mapped_column(String(100), nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
 
     genres: Mapped[list["UserGenre"]] = relationship(
@@ -41,4 +42,7 @@ class User(Base):
     )
     content_types: Mapped[list["UserContentType"]] = relationship(
         "UserContentType", back_populates="user", cascade="all, delete-orphan", lazy="selectin"
+    )
+    contents: Mapped[list["Content"]] = relationship(
+        "Content", back_populates="user", cascade="all, delete-orphan"
     )
