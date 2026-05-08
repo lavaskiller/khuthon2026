@@ -10,7 +10,7 @@ import type {
   ConsumerProfile,
 } from '@/types';
 
-const BASE_URL = (import.meta.env.VITE_API_URL as string | undefined) ?? 'http://192.168.2.20:8000';
+const BASE_URL = (import.meta.env.VITE_API_URL as string | undefined) ?? 'http://192.168.2.19:8000';
 const API_PREFIX = (import.meta.env.VITE_API_PREFIX as string | undefined) ?? '/api/v1';
 
 async function request<T>(path: string, token?: string | null, options?: RequestInit): Promise<T> {
