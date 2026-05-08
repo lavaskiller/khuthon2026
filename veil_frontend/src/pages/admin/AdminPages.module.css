@@ -68,7 +68,7 @@
 /* Table */
 .tableWrap {
   background: var(--white);
-  border-radius: var(--r-card);
+  border-radius: 16px;
   overflow: hidden;
   box-shadow: var(--shadow-nav);
 }
@@ -120,17 +120,19 @@
 /* Review detail */
 .reviewLayout {
   display: grid;
-  grid-template-columns: 1fr 360px;
-  gap: 32px;
+  grid-template-columns: minmax(0, 1fr) 420px;
+  gap: 28px;
   align-items: start;
 }
 
 .videoWrap {
   background: #000;
-  border-radius: var(--r-card);
+  border-radius: 16px;
   overflow: hidden;
   aspect-ratio: 9/16;
-  max-height: 560px;
+  max-height: calc(100vh - 160px);
+  position: sticky;
+  top: 24px;
 }
 
 .video {
@@ -142,13 +144,13 @@
 .infoPanel {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .section {
   background: var(--white);
-  border-radius: var(--r-card);
-  padding: 20px;
+  border-radius: 16px;
+  padding: 20px 24px;
   display: flex;
   flex-direction: column;
   gap: 12px;

@@ -48,9 +48,21 @@ const genresToBackend = (genres: Genre[]): string[] => genres.map(g => g.toUpper
 const genresFromBackend = (genres: unknown[]): Genre[] =>
   genres.map(g => (g as string).toLowerCase() as Genre);
 
+const toAbsoluteUrl = (url: string) => (url && !url.startsWith('http') ? `${BASE_URL}${url}` : url);
+
 const contentTypeToBackend = (ct: ContentType): string => ct.toUpperCase();
 
 const contentTypeFromBackend = (ct: string): ContentType => ct.toLowerCase() as ContentType;
+
+const ageRatingToBackend = (r: AgeRating): string => {
+  const map: Record<AgeRating, string> = { all: 'ALL', '12': 'TWELVE_PLUS', '15': 'FIFTEEN_PLUS', '19': 'ADULT_ONLY' };
+  return map[r] ?? 'ALL';
+};
+
+const ageRatingFromBackend = (r: string): AgeRating => {
+  const map: Record<string, AgeRating> = { ALL: 'all', TWELVE_PLUS: '12', FIFTEEN_PLUS: '15', ADULT_ONLY: '19' };
+  return map[r] ?? 'all';
+};
 
 // ─── Response mappers (backend snake_case → frontend camelCase) ───────────────
 
@@ -68,7 +80,7 @@ function mapContent(c: Raw): Content {
   return {
     id: String(c.id),
     creatorId: String(c.user_id ?? ''),
-    teaserUrl: (c.teaser_url as string) ?? '',
+    teaserUrl: toAbsoluteUrl((c.teaser_url as string) ?? ''),
     teaserDuration: (c.teaser_length as number) ?? 0,
     contentType: contentTypeFromBackend((c.content_type as string) ?? 'movie'),
     status: c.review_status ?? 'pending',
@@ -82,7 +94,7 @@ function mapContent(c: Raw): Content {
     genres: Array.isArray(c.genres) && c.genres.length > 0 ? genresFromBackend(c.genres) : undefined,
     directors: c.director_staff ? [(c.director_staff as string)] : undefined,
     releaseDate: c.release_date ?? undefined,
-    ageRating: c.age_rating ?? undefined,
+    ageRating: c.age_rating ? ageRatingFromBackend(c.age_rating as string) : undefined,
     externalLink: c.external_link ?? undefined,
   };
 }
@@ -91,7 +103,7 @@ function mapFeedItem(item: Raw): Content {
   return {
     id: String(item.id),
     creatorId: '',
-    teaserUrl: (item.teaser_url as string) ?? '',
+    teaserUrl: toAbsoluteUrl((item.teaser_url as string) ?? ''),
     teaserDuration: (item.teaser_length as number) ?? 0,
     contentType: contentTypeFromBackend((item.content_type as string) ?? 'movie'),
     status: 'approved',
@@ -117,7 +129,7 @@ function mapReveal(reveal: Raw, contentId: string): Content {
     genres: Array.isArray(reveal.genres) && reveal.genres.length > 0 ? genresFromBackend(reveal.genres) : undefined,
     directors: reveal.director_staff ? [(reveal.director_staff as string)] : undefined,
     releaseDate: reveal.release_date ?? undefined,
-    ageRating: reveal.age_rating ?? undefined,
+    ageRating: reveal.age_rating ? ageRatingFromBackend(reveal.age_rating as string) : undefined,
     externalLink: reveal.external_link ?? undefined,
   };
 }
@@ -182,7 +194,7 @@ export const api = {
     // 온보딩 완료 후 PATCH /users/me로 프로필 업데이트
     saveProfile: (token: string, profile: ConsumerProfile) =>
       request<Raw>('/users/me', token, {
-        method: 'PATCH',
+        method: 'PUT',
         body: JSON.stringify({
           birth_date: profile.birthDate,
           gender: genderToBackend(profile.gender),
@@ -227,7 +239,7 @@ export const api = {
 
     // PATCH /notifications/{id}/read
     markNotificationRead: (token: string, notificationId: string) =>
-      request<void>(`/notifications/${notificationId}/read`, token, { method: 'PATCH' }),
+      request<void>(`/notifications/${notificationId}/read`, token, { method: 'PUT' }),
 
     // POST /notifications/mark-all-read
     markAllNotificationsRead: (token: string) =>
@@ -261,14 +273,14 @@ export const api = {
       },
     ) =>
       request<Raw>(`/contents/${contentId}`, token, {
-        method: 'PATCH',
+        method: 'PUT',
         body: JSON.stringify({
           title: info.title,
           synopsis: info.synopsis,
           genres: genresToBackend(info.genres),
           director_staff: info.directors?.join(', ') ?? null,
           release_date: info.releaseDate ?? null,
-          age_rating: info.ageRating,
+          age_rating: ageRatingToBackend(info.ageRating),
           external_link: info.externalLink ?? null,
         }),
       }).then(mapContent),
@@ -311,7 +323,7 @@ export const api = {
 
     // PATCH /notifications/{id}/read
     markNotificationRead: (token: string, notificationId: string) =>
-      request<void>(`/notifications/${notificationId}/read`, token, { method: 'PATCH' }),
+      request<void>(`/notifications/${notificationId}/read`, token, { method: 'PUT' }),
   },
 
   admin: {
